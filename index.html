@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows-Emulator</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1e1e1e; color: white; text-align: center; padding: 20px; }
+        h1 { color: #4CAF50; }
+        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 20px auto; }
+        .btn { background: #333; border: 1px solid #555; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #444; }
+        #output { margin-top: 20px; padding: 15px; background: #222; border-radius: 10px; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <h1>🪟 Windows-Emulator</h1>
+    <div class="menu">
+        <button class="btn" onclick="showTime()">⏰ Date & Time</button>
+        <button class="btn" onclick="showBluetooth()">🔵 Bluetooth</button>
+        <button class="btn" onclick="showWiFi()">📶 Wi-Fi</button>
+        <button class="btn" onclick="showZapia()">🔄 Zapia</button>
+        <button class="btn" onclick="showSettings()">⚙️ Settings</button>
+        <button class="btn" onclick="exitApp()">❌ Exit</button>
+    </div>
+    <div id="output">Welcome! Select an option above.</div>
+
+    <script>
+        function showTime() {
+            const now = new Date();
+            document.getElementById('output').innerHTML = "Current Date & Time:<br>" + now.toLocaleString();
+        }
+        function showBluetooth() {
+            document.getElementById('output').innerHTML = "Bluetooth Manager: Scanning for devices... (Feature under construction)";
+        }
+        function showWiFi() {
+            document.getElementById('output').innerHTML = "Wi-Fi Manager: Connected to Home-WiFi<br>IP: 192.168.1.102";
+        }
+        function showZapia() {
+            document.getElementById('output').innerHTML = "Zapia (File Transfer): Coming soon!";
+        }
+        function showSettings() {
+            document.getElementById('output').innerHTML = "Settings: Dark Mode enabled. Language: English.";
+        }
+        function exitApp() {
+            document.getElementById('output').innerHTML = "Goodbye!";
+        }
+    </script>
+</body>
+</html>
