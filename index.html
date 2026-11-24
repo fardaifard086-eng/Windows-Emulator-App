@@ -8,21 +8,13 @@
     <title>Windows-Emulator OS</title>
     <style>
         :root {
-            --bg: #0f0f13;
-            --text: #ffffff;
-            --glass-bg: rgba(30, 30, 40, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --btn-bg: rgba(255, 255, 255, 0.05);
-            --btn-hover: rgba(255, 255, 255, 0.15);
-            --accent: #0078D7;
+            --bg: #0f0f13; --text: #ffffff; --glass-bg: rgba(30, 30, 40, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.15); --btn-bg: rgba(255, 255, 255, 0.05);
+            --btn-hover: rgba(255, 255, 255, 0.15); --accent: #0078D7;
         }
         body.light-mode {
-            --bg: #e0e5ec;
-            --text: #000000;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --btn-bg: rgba(0, 0, 0, 0.05);
-            --btn-hover: rgba(0, 0, 0, 0.1);
+            --bg: #e0e5ec; --text: #000000; --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1); --btn-bg: rgba(0, 0, 0, 0.05); --btn-hover: rgba(0, 0, 0, 0.1);
         }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -34,87 +26,44 @@
         }
         @keyframes bgAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* Taskbar (Top) */
-        .taskbar { 
-            background: var(--glass-bg); backdrop-filter: blur(15px); 
-            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid var(--glass-border); font-size: 14px; z-index: 100;
-        }
+        .taskbar { background: var(--glass-bg); backdrop-filter: blur(15px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); font-size: 14px; z-index: 100; }
         .taskbar-left { font-weight: bold; color: #4CAF50; font-size: 16px; }
-        
-        /* Desktop */
         .desktop { flex: 1; position: relative; padding: 20px; display: flex; justify-content: center; align-items: center; }
         
-        /* Grid Menu (Like Windows Desktop Icons) */
         .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; width: 100%; }
-        .btn { 
-            background: var(--btn-bg); backdrop-filter: blur(10px); 
-            border: 1px solid var(--glass-border); color: var(--text); 
-            padding: 20px 10px; border-radius: 12px; cursor: pointer; font-size: 15px; 
-            transition: all 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        .btn { background: var(--btn-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text); padding: 20px 10px; border-radius: 12px; cursor: pointer; font-size: 15px; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn:hover { background: var(--btn-hover); transform: translateY(-5px) scale(1.05); border-color: #4CAF50; box-shadow: 0 10px 15px rgba(0,0,0,0.2); }
         .btn span { font-size: 28px; margin-bottom: 10px; }
         .btn-exe { background: var(--accent); border-color: var(--accent); color: white; grid-column: span 2; font-weight: bold; flex-direction: row; }
         .btn-exe:hover { background: #005A9E; }
         .btn-exe span { margin-bottom: 0; margin-right: 10px; font-size: 22px; }
 
-        /* Bottom Dock */
-        .dock { 
-            background: var(--glass-bg); backdrop-filter: blur(15px); 
-            padding: 12px; display: flex; justify-content: center; gap: 20px; 
-            border-top: 1px solid var(--glass-border); z-index: 100;
-        }
-        .dock-icon { 
-            font-size: 26px; cursor: pointer; transition: 0.2s; 
-            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; background: var(--btn-bg);
-        }
+        .dock { background: var(--glass-bg); backdrop-filter: blur(15px); padding: 12px; display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--glass-border); z-index: 100; }
+        .dock-icon { font-size: 26px; cursor: pointer; transition: 0.2s; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--btn-bg); }
         .dock-icon:hover { transform: scale(1.15) translateY(-5px); background: var(--btn-hover); }
 
-        /* Draggable Windows (Modals) */
-        .window { 
-            display: none; position: absolute; z-index: 10; 
-            left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 380px; 
-            background: var(--glass-bg); backdrop-filter: blur(25px); 
-            border: 1px solid var(--glass-border); border-radius: 12px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
-            animation: openAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: var(--text); resize: both; overflow: auto;
-        }
+        .window { display: none; position: absolute; z-index: 10; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 380px; background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: openAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: var(--text); resize: both; overflow: auto; }
         @keyframes openAnim { from { opacity: 0; transform: translate(-50%, -40%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         
-        .window-header { 
-            background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 12px 12px 0 0; 
-            display: flex; justify-content: space-between; align-items: center; cursor: grab;
-            border-bottom: 1px solid var(--glass-border);
-        }
+        .window-header { background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; cursor: grab; border-bottom: 1px solid var(--glass-border); }
         .window-header:active { cursor: grabbing; }
         .window-title { font-weight: bold; color: #4CAF50; font-size: 16px; }
         .window-controls { display: flex; gap: 8px; }
         .win-btn { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; }
         .win-close { background: #ff5f56; } .win-close:hover { background: #ff3b30; }
         .win-max { background: #ffbd2e; } .win-max:hover { background: #ffcc00; }
-        
         .window-body { padding: 20px; text-align: center; font-size: 15px; }
 
-        /* App Specific Styles */
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; }
         .calc-btn { padding: 15px; font-size: 18px; background: var(--btn-bg); border: 1px solid var(--glass-border); color: var(--text); border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .calc-btn:hover { background: var(--btn-hover); }
         .calc-btn.op { color: #4CAF50; font-weight: bold; } .calc-btn.eq { background: #4CAF50; color: white; }
         .display { width: 100%; height: 50px; background: rgba(0,0,0,0.3); color: var(--text); border: 1px solid var(--glass-border); font-size: 24px; text-align: right; padding: 5px 10px; box-sizing: border-box; border-radius: 8px; }
         .signature { color: var(--accent); font-weight: bold; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--glass-border); letter-spacing: 1px; }
-        .file-list { text-align: left; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-top: 10px; }
-        .file-item { padding: 10px; border-bottom: 1px solid var(--glass-border); cursor: pointer; }
-        .file-item:hover { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
-    <!-- Top Taskbar -->
     <div class="taskbar">
         <div class="taskbar-left">🪟 Win-Emulator OS</div>
         <div class="taskbar-right">
@@ -122,7 +71,6 @@
         </div>
     </div>
 
-    <!-- Desktop Area -->
     <div class="desktop">
         <div class="menu">
             <button class="btn" onclick="openWindow('Date & Time', 'Current System Time:<br><br><b>' + new Date().toLocaleString() + '</b>')"><span>⏰</span> Date & Time</button>
@@ -134,20 +82,18 @@
         </div>
     </div>
 
-    <!-- Bottom Dock -->
     <div class="dock">
-        <div class="dock-icon" onclick="openFileExplorer()" title="File Explorer">📁</div>
-        <div class="dock-icon" onclick="openNotepad()" title="Notepad">📝</div>
-        <div class="dock-icon" onclick="openMusicPlayer()" title="Music Player">🎵</div>
+        <div class="dock-icon" onclick="openFileExplorer()">📁</div>
+        <div class="dock-icon" onclick="openNotepad()">📝</div>
+        <div class="dock-icon" onclick="openMusicPlayer()">🎵</div>
     </div>
 
-    <!-- The Draggable Window (Modal) -->
     <div id="myWindow" class="window">
         <div class="window-header" id="windowHeader">
             <div class="window-title" id="windowTitle">App Title</div>
             <div class="window-controls">
                 <button class="win-btn win-close" onclick="closeWindow()"></button>
-                <button class="win-btn win-max" onclick="maximizeWindow()"></button>
+                <button class="win-btn win-max" onclick="toggleFullScreen()"></button>
             </div>
         </div>
         <div class="window-body" id="windowBody"></div>
@@ -168,22 +114,26 @@
             document.getElementById('windowBody').innerHTML = contentHtml;
             const win = document.getElementById('myWindow');
             win.style.display = "block";
-            // Reset position to center when opening
+            win.style.width = "90%"; win.style.height = "auto";
             win.style.left = "50%"; win.style.top = "50%"; win.style.transform = "translate(-50%, -50%)";
         }
 
         function closeWindow() {
-            document.getElementById('myWindow').style.display = "none";
+            const win = document.getElementById('myWindow');
+            win.style.display = "none";
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
         }
 
-        function maximizeWindow() {
+        function toggleFullScreen() {
             const win = document.getElementById('myWindow');
-            if(win.style.width === "100%" || win.style.width === "100vw") {
-                win.style.width = "90%"; win.style.height = "auto";
-                win.style.left = "50%"; win.style.top = "50%"; win.style.transform = "translate(-50%, -50%)";
+            if (!document.fullscreenElement) {
+                win.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable fullscreen: ${err.message}`);
+                });
             } else {
-                win.style.width = "100%"; win.style.height = "100%";
-                win.style.left = "0"; win.style.top = "0"; win.style.transform = "none";
+                document.exitFullscreen();
             }
         }
 
@@ -191,7 +141,7 @@
         dragElement(document.getElementById("myWindow"));
         function dragElement(elmnt) {
             var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            const header = document.getElementById(elmnt.id + "Header") || document.getElementById("windowHeader");
+            const header = document.getElementById("windowHeader");
             if (header) { header.onmousedown = dragMouseDown; } else { elmnt.onmousedown = dragMouseDown; }
 
             function dragMouseDown(e) {
@@ -205,11 +155,9 @@
                 e = e || window.event; e.preventDefault();
                 pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
                 pos3 = e.clientX; pos4 = e.clientY;
-                // Calculate new position (ignoring transform)
                 let currentTop = parseInt(elmnt.style.top) || 0;
                 let currentLeft = parseInt(elmnt.style.left) || 0;
                 
-                // If it's centered via transform, we need to adjust first
                 if(elmnt.style.transform.includes("translate")) {
                     elmnt.style.transform = "none";
                     elmnt.style.top = (window.innerHeight / 2 - elmnt.offsetHeight / 2) + "px";
@@ -231,17 +179,19 @@
             openWindow("⚙️ Settings", `
                 <p>Theme: <b>${isLight ? 'Light' : 'Dark'}</b></p>
                 <button class="btn" style="width:100%; margin-top:15px;" onclick="toggleTheme()"><span>${isLight ? '🌙' : '☀️'}</span> Change Theme</button>
+                <button class="btn" style="width:100%; margin-top:10px; background:#0078D7; color:white;" onclick="installApp()"><span>📲</span> Install on Home Screen</button>
             `);
         }
         function toggleTheme() { document.body.classList.toggle('light-mode'); openSettings(); }
+        function installApp() { alert("For installing, use your browser menu (Three dots) and select 'Add to Home screen'."); }
 
         function openFileExplorer() {
             openWindow("📁 File Explorer", `
-                <div class="file-list">
-                    <div class="file-item">📁 Program Files</div>
-                    <div class="file-item">📁 Windows</div>
-                    <div class="file-item">📄 readme.txt</div>
-                    <div class="file-item" style="color:#4CAF50;">📄 Zapia_Download.zip</div>
+                <div style="text-align:left; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px;">
+                    <div style="padding:10px; border-bottom:1px solid var(--glass-border);">📁 Program Files</div>
+                    <div style="padding:10px; border-bottom:1px solid var(--glass-border);">📁 Windows</div>
+                    <div style="padding:10px; border-bottom:1px solid var(--glass-border);">📄 readme.txt</div>
+                    <div style="padding:10px; color:#4CAF50;">📄 Zapia_Download.zip</div>
                 </div>
             `);
         }
@@ -318,7 +268,6 @@
             document.getElementById('exeTxt').innerText = "Loading " + f.name + "... (Simulating)";
         }
 
-        // Global Click to Close (optional, but good for UX)
         document.getElementById('myWindow').onclick = function(e) { e.stopPropagation(); };
     </script>
 </body>
