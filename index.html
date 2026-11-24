@@ -5,62 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows-Emulator</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #1e1e1e; color: white; text-align: center; padding: 20px; }
-        h1 { color: #4CAF50; }
-        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 20px auto; }
-        .btn { background: #333; border: 1px solid #555; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .btn:hover { background: #444; }
-        .btn-exe { background: #0078D7; border-color: #0078D7; grid-column: span 2; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #202020; color: white; text-align: center; padding: 20px; margin: 0; }
+        .header { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .header img { width: 40px; margin-right: 10px; }
+        h1 { color: #4CAF50; font-size: 24px; margin: 0; }
+        
+        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 20px auto; }
+        
+        .btn { background: #2d2d2d; border: 1px solid #444; color: white; padding: 18px 10px; border-radius: 8px; cursor: pointer; font-size: 15px; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .btn:hover { background: #3a3a3a; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .btn span { font-size: 24px; margin-bottom: 8px; }
+        
+        .btn-exe { background: #0078D7; border-color: #0078D7; grid-column: span 2; font-weight: bold; flex-direction: row; }
         .btn-exe:hover { background: #005A9E; }
-        #output { margin-top: 20px; padding: 15px; background: #222; border-radius: 10px; min-height: 50px; }
+        .btn-exe span { margin-bottom: 0; margin-right: 10px; font-size: 20px; }
+
+        /* Popup Modal Style */
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
+        .modal-content { background-color: #2d2d2d; margin: 15% auto; padding: 20px; border: 1px solid #888; border-radius: 10px; width: 80%; max-width: 350px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: white; }
+        .modal-title { color: #4CAF50; font-size: 20px; margin-bottom: 15px; }
+        .modal-text { font-size: 16px; margin-bottom: 20px; line-height: 1.5; }
     </style>
 </head>
 <body>
-    <h1>🪟 Windows-Emulator</h1>
-    <div class="menu">
-        <button class="btn" onclick="showTime()">⏰ Date & Time</button>
-        <button class="btn" onclick="showBluetooth()">🔵 Bluetooth</button>
-        <button class="btn" onclick="showWiFi()">📶 Wi-Fi</button>
-        <button class="btn" onclick="showZapia()">🔄 Zapia</button>
-        <button class="btn" onclick="showSettings()">⚙️ Settings</button>
-        
-        <!-- دکمه جدید برای اجرای برنامه ویندوز -->
-        <button class="btn btn-exe" onclick="launchExe()">🚀 Run Windows App (EXE)</button>
-        
-        <button class="btn" onclick="exitApp()">❌ Exit</button>
+
+    <div class="header">
+        <h1>🪟 Windows-Emulator</h1>
     </div>
-    <div id="output">Welcome! Select an option above.</div>
+
+    <div class="menu">
+        <button class="btn" onclick="openModal('Date & Time', new Date().toLocaleString())"><span>⏰</span> Date & Time</button>
+        <button class="btn" onclick="openModal('Bluetooth', 'Scanning for devices...\n(Feature under construction)')"><span>🔵</span> Bluetooth</button>
+        <button class="btn" onclick="openModal('Wi-Fi', 'Connected to Home-WiFi\nIP: 192.168.1.102')"><span>📶</span> Wi-Fi</button>
+        <button class="btn" onclick="openModal('Zapia', 'File Transfer feature is coming soon!')"><span>🔄</span> Zapia</button>
+        <button class="btn" onclick="openModal('Settings', 'Dark Mode enabled.\nLanguage: English.')"><span>⚙️</span> Settings</button>
+        
+        <button class="btn btn-exe" onclick="simulateEXE()"><span>🚀</span> Run Windows App (EXE)</button>
+        
+        <button class="btn" onclick="openModal('Exit', 'Goodbye! Close the browser tab to exit.')"><span>❌</span> Exit</button>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-text" id="modalText"></div>
+        </div>
+    </div>
 
     <script>
-        function showTime() {
-            const now = new Date();
-            document.getElementById('output').innerHTML = "Current Date & Time:<br>" + now.toLocaleString();
+        // تابع باز کردن پنجره
+        function openModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalText').innerText = text;
+            document.getElementById('myModal').style.display = "block";
         }
-        function showBluetooth() {
-            document.getElementById('output').innerHTML = "Bluetooth Manager: Scanning for devices... (Feature under construction)";
+
+        // تابع بستن پنجره
+        function closeModal() {
+            document.getElementById('myModal').style.display = "none";
         }
-        function showWiFi() {
-            document.getElementById('output').innerHTML = "Wi-Fi Manager: Connected to Home-WiFi<br>IP: 192.168.1.102";
+
+        // بستن پنجره با کلیک بیرون از آن
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
-        function showZapia() {
-            document.getElementById('output').innerHTML = "Zapia (File Transfer): Coming soon!";
-        }
-        function showSettings() {
-            document.getElementById('output').innerHTML = "Settings: Dark Mode enabled. Language: English.";
-        }
-        
-        // تابع جدید برای اجرای برنامه ویندوز
-        function launchExe() {
-            document.getElementById('output').innerHTML = "Launching Windows Emulator (Winlator)...<br>Please wait.";
-            // در نسخه واقعی، اینجا کد باز کردن Winlator قرار می‌گیرد
-            setTimeout(() => {
-                alert("In a real app, this would open Winlator to run your EXE file!");
-                document.getElementById('output').innerHTML = "Winlator is not installed or link not configured yet.";
-            }, 1500);
-        }
-        
-        function exitApp() {
-            document.getElementById('output').innerHTML = "Goodbye!";
+
+        // شبیه‌سازی اجرای فایل EXE
+        function simulateEXE() {
+            openModal('Launching EXE', 'Simulating Windows Environment...\n\nIn the real app, this will open Winlator or a similar tool to run your .exe file.');
+            // اینجا در آینده می‌توانید لینک واقعی Winlator را قرار دهید
         }
     </script>
 </body>
