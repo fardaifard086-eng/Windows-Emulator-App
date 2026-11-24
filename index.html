@@ -8,8 +8,10 @@
         body { font-family: Arial, sans-serif; background: #1e1e1e; color: white; text-align: center; padding: 20px; }
         h1 { color: #4CAF50; }
         .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 20px auto; }
-        .btn { background: #333; border: 1px solid #555; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; }
+        .btn { background: #333; border: 1px solid #555; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; transition: 0.3s; }
         .btn:hover { background: #444; }
+        .btn-exe { background: #0078D7; border-color: #0078D7; grid-column: span 2; font-weight: bold; }
+        .btn-exe:hover { background: #005A9E; }
         #output { margin-top: 20px; padding: 15px; background: #222; border-radius: 10px; min-height: 50px; }
     </style>
 </head>
@@ -21,6 +23,10 @@
         <button class="btn" onclick="showWiFi()">📶 Wi-Fi</button>
         <button class="btn" onclick="showZapia()">🔄 Zapia</button>
         <button class="btn" onclick="showSettings()">⚙️ Settings</button>
+        
+        <!-- دکمه جدید برای اجرای برنامه ویندوز -->
+        <button class="btn btn-exe" onclick="launchExe()">🚀 Run Windows App (EXE)</button>
+        
         <button class="btn" onclick="exitApp()">❌ Exit</button>
     </div>
     <div id="output">Welcome! Select an option above.</div>
@@ -42,6 +48,17 @@
         function showSettings() {
             document.getElementById('output').innerHTML = "Settings: Dark Mode enabled. Language: English.";
         }
+        
+        // تابع جدید برای اجرای برنامه ویندوز
+        function launchExe() {
+            document.getElementById('output').innerHTML = "Launching Windows Emulator (Winlator)...<br>Please wait.";
+            // در نسخه واقعی، اینجا کد باز کردن Winlator قرار می‌گیرد
+            setTimeout(() => {
+                alert("In a real app, this would open Winlator to run your EXE file!");
+                document.getElementById('output').innerHTML = "Winlator is not installed or link not configured yet.";
+            }, 1500);
+        }
+        
         function exitApp() {
             document.getElementById('output').innerHTML = "Goodbye!";
         }
