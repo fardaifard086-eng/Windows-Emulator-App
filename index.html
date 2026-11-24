@@ -3,84 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows-Emulator</title>
+    <title>Windows-Emulator OS</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #202020; color: white; text-align: center; padding: 20px; margin: 0; }
-        .header { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .header img { width: 40px; margin-right: 10px; }
-        h1 { color: #4CAF50; font-size: 24px; margin: 0; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover;
+            color: white; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column;
+        }
+
+        /* Taskbar Top */
+        .taskbar { 
+            background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); 
+            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px;
+        }
+        .taskbar-left { font-weight: bold; color: #4CAF50; font-size: 16px; }
+        .taskbar-right { display: flex; gap: 15px; align-items: center; }
         
-        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 20px auto; }
+        /* Desktop Area */
+        .desktop { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+
+        /* App Grid */
+        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; width: 100%; }
         
-        .btn { background: #2d2d2d; border: 1px solid #444; color: white; padding: 18px 10px; border-radius: 8px; cursor: pointer; font-size: 15px; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn:hover { background: #3a3a3a; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        .btn span { font-size: 24px; margin-bottom: 8px; }
+        .btn { 
+            background: rgba(45, 45, 45, 0.7); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1); color: white; padding: 20px 10px; 
+            border-radius: 12px; cursor: pointer; font-size: 15px; transition: all 0.3s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .btn:hover { background: rgba(60, 60, 60, 0.9); transform: translateY(-3px) scale(1.02); border-color: #4CAF50; }
+        .btn span { font-size: 28px; margin-bottom: 10px; }
         
-        .btn-exe { background: #0078D7; border-color: #0078D7; grid-column: span 2; font-weight: bold; flex-direction: row; }
-        .btn-exe:hover { background: #005A9E; }
-        .btn-exe span { margin-bottom: 0; margin-right: 10px; font-size: 20px; }
+        .btn-exe { background: rgba(0, 120, 215, 0.8); border-color: #0078D7; grid-column: span 2; font-weight: bold; flex-direction: row; }
+        .btn-exe:hover { background: rgba(0, 90, 158, 0.9); }
+        .btn-exe span { margin-bottom: 0; margin-right: 10px; font-size: 22px; }
+
+        /* Bottom Taskbar (Dock) */
+        .dock { 
+            background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); 
+            padding: 15px; display: flex; justify-content: center; gap: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .dock-icon { font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .dock-icon:hover { transform: scale(1.2); }
 
         /* Popup Modal Style */
-        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
-        .modal-content { background-color: #2d2d2d; margin: 15% auto; padding: 20px; border: 1px solid #888; border-radius: 10px; width: 80%; max-width: 350px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(3px); }
+        .modal-content { 
+            background: rgba(30, 30, 30, 0.95); border: 1px solid #444; margin: 15% auto; 
+            padding: 25px; border-radius: 12px; width: 85%; max-width: 350px; text-align: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close:hover { color: white; }
-        .modal-title { color: #4CAF50; font-size: 20px; margin-bottom: 15px; }
-        .modal-text { font-size: 16px; margin-bottom: 20px; line-height: 1.5; }
+        .modal-title { color: #4CAF50; font-size: 22px; margin-bottom: 15px; font-weight: bold; }
+        .modal-text { font-size: 16px; margin-bottom: 20px; line-height: 1.6; color: #ddd; white-space: pre-wrap; }
+        
+        /* File Explorer Style inside modal */
+        .file-list { text-align: left; margin-top: 15px; background: #111; padding: 10px; border-radius: 8px; border: 1px solid #333; }
+        .file-item { padding: 10px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px; }
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: #222; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>🪟 Windows-Emulator</h1>
+    <!-- Top Taskbar -->
+    <div class="taskbar">
+        <div class="taskbar-left">🪟 Win-Emulator OS</div>
+        <div class="taskbar-right">
+            <span id="live-time">00:00</span>
+            <span id="live-date">2026-11-24</span>
+        </div>
     </div>
 
-    <div class="menu">
-        <button class="btn" onclick="openModal('Date & Time', new Date().toLocaleString())"><span>⏰</span> Date & Time</button>
-        <button class="btn" onclick="openModal('Bluetooth', 'Scanning for devices...\n(Feature under construction)')"><span>🔵</span> Bluetooth</button>
-        <button class="btn" onclick="openModal('Wi-Fi', 'Connected to Home-WiFi\nIP: 192.168.1.102')"><span>📶</span> Wi-Fi</button>
-        <button class="btn" onclick="openModal('Zapia', 'File Transfer feature is coming soon!')"><span>🔄</span> Zapia</button>
-        <button class="btn" onclick="openModal('Settings', 'Dark Mode enabled.\nLanguage: English.')"><span>⚙️</span> Settings</button>
-        
-        <button class="btn btn-exe" onclick="simulateEXE()"><span>🚀</span> Run Windows App (EXE)</button>
-        
-        <button class="btn" onclick="openModal('Exit', 'Goodbye! Close the browser tab to exit.')"><span>❌</span> Exit</button>
+    <!-- Main Desktop Area -->
+    <div class="desktop">
+        <div class="menu">
+            <button class="btn" onclick="openModal('Date & Time', 'Current System Time:\n\n' + new Date().toLocaleString())"><span>⏰</span> Date & Time</button>
+            <button class="btn" onclick="openModal('Bluetooth', 'Status: Scanning...\n\nNo devices found yet.\n(Feature under construction)')"><span>🔵</span> Bluetooth</button>
+            <button class="btn" onclick="openModal('Wi-Fi', 'Network: Home-WiFi\nIP Address: 192.168.1.102\nSignal: Excellent')"><span>📶</span> Wi-Fi</button>
+            <button class="btn" onclick="openModal('Zapia', 'File Transfer feature is coming soon!\n\nYou will be able to send files here.')"><span>🔄</span> Zapia</button>
+            <button class="btn" onclick="openModal('Settings', 'System Settings:\n\nTheme: Dark Mode\nLanguage: English\nVersion: 1.0.0')"><span>⚙️</span> Settings</button>
+            
+            <button class="btn btn-exe" onclick="simulateEXE()"><span>🚀</span> Run EXE</button>
+            
+            <button class="btn" onclick="openModal('System Shutdown', 'Goodbye! You can close the browser tab now.')"><span>❌</span> Exit</button>
+        </div>
     </div>
 
-    <!-- The Modal -->
+    <!-- Bottom Dock (Taskbar) -->
+    <div class="dock">
+        <span class="dock-icon" onclick="openFileExplorer()">📁</span>
+        <span class="dock-icon" onclick="openModal('Terminal', 'Terminal app is under construction.\n\nBut you are already using Termux!')">📟</span>
+        <span class="dock-icon" onclick="openModal('Web Browser', 'Browser app is under construction.')">🌐</span>
+    </div>
+
+    <!-- The Modal (Popup Window) -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <div class="modal-title" id="modalTitle"></div>
             <div class="modal-text" id="modalText"></div>
+            <div id="fileExplorerContent"></div>
         </div>
     </div>
 
     <script>
-        // تابع باز کردن پنجره
+        // Update Time Live
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('live-time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('live-date').innerText = now.toLocaleDateString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Open Modal Function
         function openModal(title, text) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalText').innerText = text;
+            document.getElementById('fileExplorerContent').innerHTML = ""; // Clear previous explorer
             document.getElementById('myModal').style.display = "block";
         }
 
-        // تابع بستن پنجره
+        // Close Modal Function
         function closeModal() {
             document.getElementById('myModal').style.display = "none";
         }
 
-        // بستن پنجره با کلیک بیرون از آن
+        // File Explorer Simulation
+        function openFileExplorer() {
+            document.getElementById('modalTitle').innerText = "📁 File Explorer";
+            document.getElementById('modalText').innerText = "This PC > Local Disk (C:)";
+            
+            let fileHtml = `
+                <div class="file-list">
+                    <div class="file-item">📁 Program Files</div>
+                    <div class="file-item">📁 Windows</div>
+                    <div class="file-item">📁 Users</div>
+                    <div class="file-item">📄 readme.txt</div>
+                    <div class="file-item">📄 game.exe</div>
+                </div>
+            `;
+            document.getElementById('fileExplorerContent').innerHTML = fileHtml;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        // Simulate EXE Launch
+        function simulateEXE() {
+            openModal('Launching EXE', 'Simulating Windows Environment...\n\nPlease select an EXE file to run.');
+            
+            // Show a fake loading bar after 1 second
+            setTimeout(() => {
+                let loadingHtml = `
+                    <div style="margin-top: 15px;">
+                        <div style="background:#333; border-radius:5px; height:10px; width:100%; overflow:hidden;">
+                            <div style="background:#4CAF50; height:100%; width:100%; animation: load 2s ease-in-out;"></div>
+                        </div>
+                        <p style="margin-top:10px; font-size:12px; color:#888;">In a real app, Winlator would open here.</p>
+                    </div>
+                    <style>
+                        @keyframes load { from { width: 0%; } to { width: 100%; } }
+                    </style>
+                `;
+                document.getElementById('fileExplorerContent').innerHTML = loadingHtml;
+            }, 500);
+        }
+
+        // Close modal if clicking outside
         window.onclick = function(event) {
             var modal = document.getElementById('myModal');
             if (event.target == modal) {
                 modal.style.display = "none";
             }
-        }
-
-        // شبیه‌سازی اجرای فایل EXE
-        function simulateEXE() {
-            openModal('Launching EXE', 'Simulating Windows Environment...\n\nIn the real app, this will open Winlator or a similar tool to run your .exe file.');
-            // اینجا در آینده می‌توانید لینک واقعی Winlator را قرار دهید
         }
     </script>
 </body>
