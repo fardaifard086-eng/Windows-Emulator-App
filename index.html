@@ -1,3 +1,251 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0078D7"><title>Windows-Emulator</title><style>:root{--bg:#1a1a1a;--text:#fff;--panel:#2d2d2d;--border:#444}body.light{--bg:#f0f0f0;--text:#000;--panel:#ddd;--border:#bbb}body{font-family:sans-serif;background:var(--bg);color:var(--text);margin:0;display:flex;flex-direction:column;height:100vh}.taskbar{background:var(--panel);padding:10px 20px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border)}.desktop{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px;max-width:400px;margin:0 auto;align-content:center}.btn{background:var(--panel);border:1px solid var(--border);color:var(--text);padding:20px;border-radius:12px;cursor:pointer;font-size:14px;display:flex;flex-direction:column;align-items:center}.btn span{font-size:24px;margin-bottom:8px}.exe{grid-column:span 2;background:#0078D7;color:white}.dock{background:var(--panel);padding:15px;display:flex;justify-content:center;gap:20px;border-top:1px solid var(--border);font-size:24px}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7)}.content{background:var(--panel);margin:20% auto;padding:20px;border-radius:12px;width:80%;max-width:320px;text-align:center;position:relative}.close{position:absolute;right:15px;top:10px;font-size:24px;cursor:pointer}.sig{color:#0078D7;font-weight:bold;margin-bottom:15px;border-bottom:1px solid var(--border);padding-bottom:10px}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.calc-btn{padding:15px;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:5px;cursor:pointer}.display{width:100%;height:40px;margin-bottom:10px;text-align:right;font-size:20px;background:var(--bg);color:var(--text);border:1px solid var(--border)}</style></head><body><div class="taskbar"><b>🪟 Win-Emulator</b><span id="clock"></span></div><div class="desktop"><button class="btn" onclick="show('Date','Today is: '+new Date().toLocaleString())"><span>⏰</span>Date</button><button class="btn" onclick="show('Bluetooth','Scanning...')"><span>🔵</span>Bluetooth</button><button class="btn" onclick="show('Wi-Fi','Connected to Home-WiFi')"><span>📶</span>Wi-Fi</button><button class="btn" onclick="zapia()"><span>🔄</span>Zapia</button><button class="btn" onclick="settings()"><span>⚙️</span>Settings</button><button class="btn exe" onclick="show('EXE','Select an EXE file to run.')"><span>🚀</span>Run Windows App</button></div><div class="dock"><span onclick="explorer()">📁</span><span onclick="calc()">🧮</span><span onclick="music()">🎵</span></div><div id="modal" class="modal"><div class="content"><span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span><div id="title" style="color:#4CAF50;font-size:20px;margin-bottom:15px"></div><div id="body"></div></div></div><script>setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})},1000);function show(t,b){document.getElementById('title').innerText=t;document.getElementById('body').innerHTML=b;document.getElementById('modal').style.display='block'}function settings(){show('Settings','<button onclick="document.body.classList.toggle(\'light\')">Toggle Theme</button>')}function explorer(){show('File Explorer','<div style="text-align:left;background:#111;padding:10px">📁 Program Files<br>📁 Windows<br>📄 readme.txt</div>')}let exp='';function calc(){show('Calculator','<div class="sig">👨‍💻 فردین نبی زاده</div><input id="d" class="display" readonly><div class="calc-grid"><button class="calc-btn" onclick="calc(1)">1</button><button class="calc-btn" onclick="calc(2)">2</button><button class="calc-btn" onclick="calc(3)">3</button><button class="calc-btn" onclick="calc(\'+\')">+</button><button class="calc-btn" onclick="calc(4)">4</button><button class="calc-btn" onclick="calc(5)">5</button><button class="calc-btn" onclick="calc(6)">6</button><button class="calc-btn" onclick="calc(\'-\')">-</button><button class="calc-btn" onclick="calc(7)">7</button><button class="calc-btn" onclick="calc(8)">8</button><button class="calc-btn" onclick="calc(9)">9</button><button class="calc-btn" onclick="calc(\'*\')">*</button><button class="calc-btn" onclick="exp=\'\'">C</button><button class="calc-btn" onclick="calc(0)">0</button><button class="calc-btn" onclick="document.getElementById(\'d\').value=eval(exp)">=</button><button class="calc-btn" onclick="calc(\'/\')">/</button></div>')}function calc(v){exp+=v;document.getElementById('d').value=exp}function music(){show('Music','<audio controls style="width:100%"><source src="" type="audio/mpeg"></audio><p>Select a local file in a real app.</p>')}function zapia(){show('Zapia','<input type="file"><br><br><progress value="100" max="100"></progress>')}</script></body></html>
+    <meta name="theme-color" content="#0078D7">
+    <title>Windows-Emulator OS</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a; --text-color: #ffffff; --panel-bg: rgba(30, 30, 30, 0.95);
+            --btn-bg: rgba(45, 45, 45, 0.7); --btn-hover: rgba(60, 60, 60, 0.9); --border-color: rgba(255,255,255,0.1);
+        }
+        body.light-mode {
+            --bg-color: #f0f0f0; --text-color: #000000; --panel-bg: rgba(255, 255, 255, 0.95);
+            --btn-bg: rgba(220, 220, 220, 0.8); --btn-hover: rgba(200, 200, 200, 1); --border-color: rgba(0,0,0,0.1);
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
+        .taskbar { background: var(--panel-bg); backdrop-filter: blur(10px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        .taskbar-left { font-weight: bold; color: #4CAF50; font-size: 16px; }
+        .desktop { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; width: 100%; }
+        .btn { background: var(--btn-bg); backdrop-filter: blur(5px); border: 1px solid var(--border-color); color: var(--text-color); padding: 20px 10px; border-radius: 12px; cursor: pointer; font-size: 15px; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn:hover { background: var(--btn-hover); transform: translateY(-3px) scale(1.02); border-color: #4CAF50; }
+        .btn span { font-size: 28px; margin-bottom: 10px; }
+        .btn-exe { background: #0078D7; border-color: #0078D7; color: white; grid-column: span 2; font-weight: bold; flex-direction: row; }
+        .btn-exe:hover { background: #005A9E; }
+        .btn-exe span { margin-bottom: 0; margin-right: 10px; font-size: 22px; }
+        .dock { background: var(--panel-bg); backdrop-filter: blur(10px); padding: 15px; display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--border-color); font-size: 26px; }
+        .dock-icon { cursor: pointer; transition: 0.2s; }
+        .dock-icon:hover { transform: scale(1.2); }
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
+        .modal-content { background: var(--panel-bg); border: 1px solid var(--border-color); margin: 10% auto; padding: 25px; border-radius: 12px; width: 85%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease-in-out; color: var(--text-color); position: relative; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .close { position: absolute; right: 15px; top: 10px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: #ff4444; }
+        .modal-title { color: #4CAF50; font-size: 22px; margin-bottom: 15px; font-weight: bold; }
+        .modal-text { font-size: 16px; margin-bottom: 20px; line-height: 1.6; }
+        
+        /* Notepad Styles */
+        .notepad-area { width: 100%; height: 150px; background: var(--btn-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; font-family: monospace; resize: none; margin-bottom: 10px; box-sizing: border-box; }
+        .notepad-btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .notepad-btn:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+    <div class="taskbar">
+        <div class="taskbar-left">🪟 Win-Emulator OS</div>
+        <div class="taskbar-right">
+            <span id="live-time">00:00</span>
+            <span id="live-date">2026-11-24</span>
+        </div>
+    </div>
+
+    <div class="desktop">
+        <div class="menu">
+            <button class="btn" onclick="openModal('Date & Time', 'Current System Time:\n\n' + new Date().toLocaleString())"><span>⏰</span> Date & Time</button>
+            <button class="btn" onclick="openZapia()"><span>🔄</span> Zapia (Transfer)</button>
+            <button class="btn" onclick="openSettings()"><span>⚙️</span> Settings</button>
+            <button class="btn" onclick="openCalculator()"><span>🧮</span> Calculator</button>
+            
+            <button class="btn btn-exe" onclick="openEXE()"><span>🚀</span> Run Windows App (EXE)</button>
+            
+            <button class="btn" onclick="openModal('System Shutdown', 'Goodbye! You can close the browser tab now.')"><span>❌</span> Exit</button>
+        </div>
+    </div>
+
+    <div class="dock">
+        <span class="dock-icon" onclick="openFileExplorer()">📁</span>
+        <span class="dock-icon" onclick="openNotepad()">📝</span>
+        <span class="dock-icon" onclick="openMusicPlayer()">🎵</span>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-text" id="modalText"></div>
+            <div id="dynamicContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('live-time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('live-date').innerText = now.toLocaleDateString();
+        }
+        setInterval(updateTime, 1000); updateTime();
+
+        function openModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalText').innerText = text;
+            document.getElementById('dynamicContent').innerHTML = ""; 
+            document.getElementById('myModal').style.display = "block";
+        }
+        function closeModal() { document.getElementById('myModal').style.display = "none"; }
+
+        // --- Notepad App ---
+        function openNotepad() {
+            document.getElementById('modalTitle').innerText = "📝 Notepad";
+            document.getElementById('modalText').innerText = "";
+            let savedText = localStorage.getItem('myNotes') || "";
+            let notepadHtml = `
+                <textarea class="notepad-area" id="notepadText" placeholder="Type your notes here...">${savedText}</textarea>
+                <button class="notepad-btn" onclick="saveNote()">💾 Save Note</button>
+                <p id="saveStatus" style="color:#4CAF50; font-size:12px; margin-top:10px;"></p>
+            `;
+            document.getElementById('dynamicContent').innerHTML = notepadHtml;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function saveNote() {
+            let text = document.getElementById('notepadText').value;
+            localStorage.setItem('myNotes', text);
+            document.getElementById('saveStatus').innerText = "✅ Note saved successfully!";
+            setTimeout(() => { document.getElementById('saveStatus').innerText = ""; }, 2000);
+        }
+
+        // --- Settings ---
+        function openSettings() {
+            document.getElementById('modalTitle').innerText = "⚙️ System Settings";
+            let isLight = document.body.classList.contains('light-mode');
+            let settingsHtml = `
+                <button class="btn" style="margin: 15px auto; width: 80%;" onclick="toggleTheme()">
+                    <span>${isLight ? '🌙' : '☀️'}</span> Switch Theme
+                </button>
+                <button class="btn" style="margin: 15px auto; width: 80%; background: #ff4444; color: white;" onclick="clearData()">
+                    <span>🗑️</span> Clear App Data
+                </button>
+            `;
+            document.getElementById('dynamicContent').innerHTML = settingsHtml;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function toggleTheme() { document.body.classList.toggle('light-mode'); openSettings(); }
+        function clearData() { localStorage.clear(); alert("All app data cleared!"); closeModal(); }
+
+        // --- Zapia Transfer ---
+        function openZapia() {
+            document.getElementById('modalTitle').innerText = "🔄 Zapia Transfer";
+            let zapiaHtml = `
+                <label class="btn" style="cursor:pointer; background:#4CAF50; color:white;">
+                    <input type="file" style="display:none;" onchange="startTransfer(this)"/>
+                    📂 Choose File
+                </label>
+                <div style="background:#333; height:10px; width:100%; margin-top:15px; display:none;" id="progCont"><div style="background:#4CAF50; height:100%; width:0%;" id="progBar"></div></div>
+                <p id="transText"></p>
+            `;
+            document.getElementById('dynamicContent').innerHTML = zapiaHtml;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function startTransfer(input) {
+            if(!input.files[0]) return;
+            document.getElementById('progCont').style.display = "block";
+            document.getElementById('transText').innerText = "Transferring: " + input.files[0].name;
+            let p = 0, bar = document.getElementById('progBar');
+            let int = setInterval(() => {
+                p += 20; bar.style.width = p + "%";
+                if(p >= 100) { clearInterval(int); document.getElementById('transText').innerText = "✅ Done!"; }
+            }, 300);
+        }
+
+        // --- EXE Launcher ---
+        function openEXE() {
+            document.getElementById('modalTitle').innerText = "🚀 Run EXE";
+            let html = `
+                <label class="btn" style="cursor:pointer; background:#0078D7; color:white;">
+                    <input type="file" accept=".exe" style="display:none;" onchange="loadEXE(this)"/>
+                    📂 Select EXE
+                </label>
+                <div id="exeStat"></div>
+            `;
+            document.getElementById('dynamicContent').innerHTML = html;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function loadEXE(input) {
+            if(!input.files[0]) return;
+            document.getElementById('exeStat').innerText = "Loading " + input.files[0].name + "...";
+        }
+
+        // --- Calculator ---
+        let calcExp = "";
+        function openCalculator() {
+            document.getElementById('modalTitle').innerText = "🧮 Calculator";
+            calcExp = "";
+            let html = `
+                <div style="color:#0078D7; font-weight:bold; margin-bottom:15px;">👨‍💻 فردین نبی زاده</div>
+                <input type="text" id="calcDisp" style="width:100%; height:40px; text-align:right; font-size:20px; background:#222; color:white; border:none; margin-bottom:10px;" readonly>
+                <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:5px;">
+                    <button onclick="cIn('7')">7</button><button onclick="cIn('8')">8</button><button onclick="cIn('9')">9</button><button onclick="cIn('/')">/</button>
+                    <button onclick="cIn('4')">4</button><button onclick="cIn('5')">5</button><button onclick="cIn('6')">6</button><button onclick="cIn('*')">*</button>
+                    <button onclick="cIn('1')">1</button><button onclick="cIn('2')">2</button><button onclick="cIn('3')">3</button><button onclick="cIn('-')">-</button>
+                    <button onclick="calcExp='';document.getElementById('calcDisp').value=''">C</button><button onclick="cIn('0')">0</button><button onclick="document.getElementById('calcDisp').value=eval(calcExp)">=</button><button onclick="cIn('+')">+</button>
+                </div>
+            `;
+            document.getElementById('dynamicContent').innerHTML = html;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function cIn(v) { calcExp += v; document.getElementById('calcDisp').value = calcExp; }
+
+        // --- Music Player ---
+        function openMusicPlayer() {
+            document.getElementById('modalTitle').innerText = "🎵 Music Player";
+            let html = `
+                <label class="btn" style="cursor:pointer; background:#4CAF50; color:white;">
+                    <input type="file" accept="audio/*" style="display:none;" onchange="playAudio(this)"/>
+                    📂 Load Audio
+                </label>
+                <div id="musicInfo" style="margin-top:15px;"></div>
+                <audio id="audPlayer" controls style="width:100%; margin-top:10px; display:none;"></audio>
+            `;
+            document.getElementById('dynamicContent').innerHTML = html;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function playAudio(input) {
+            if(!input.files[0]) return;
+            let audio = document.getElementById('audPlayer');
+            audio.src = URL.createObjectURL(input.files[0]);
+            audio.style.display = "block";
+            document.getElementById('musicInfo').innerText = "Playing: " + input.files[0].name;
+            audio.play();
+        }
+
+        // --- File Explorer ---
+        function openFileExplorer() {
+            document.getElementById('modalTitle').innerText = "📁 File Explorer";
+            document.getElementById('modalText').innerText = "This PC > Local Disk (C:)";
+            document.getElementById('dynamicContent').innerHTML = `
+                <div style="text-align:left; background:#111; padding:10px; border-radius:5px;">
+                    <div>📁 Program Files</div>
+                    <div>📁 Windows</div>
+                    <div>📄 readme.txt</div>
+                    <div style="color:#4CAF50;">📄 Zapia_Download.zip</div>
+                </div>
+            `;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+    </script>
+</body>
+</html>
